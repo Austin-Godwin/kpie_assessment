@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kpie_assessment/utils/color.dart';
+import 'package:kpie_assessment/utils/validator.dart';
 import 'package:kpie_assessment/views/authentication/login/login.dart';
 import 'package:kpie_assessment/views/authentication/sign_up/view_model/sign_up_view_model.dart';
 import 'package:kpie_assessment/widgets/app_button.dart';
@@ -32,12 +33,14 @@ class SignUP extends ConsumerWidget {
               text: 'Full Name',
               controller: model.fullName,
               textInputType: TextInputType.text,
+              validator: (v) => Validators.fullName(v),
             ),
             const SizedBox(height: 5.5),
             UserInput(
               text: 'Email',
               controller: model.email,
               textInputType: TextInputType.emailAddress,
+              validator: (v) => Validators.email(v),
             ),
             const SizedBox(height: 5.5),
             UserInput(
@@ -45,6 +48,7 @@ class SignUP extends ConsumerWidget {
               controller: model.password,
               textInputType: TextInputType.visiblePassword,
               obscureText: true,
+              validator: (v) => Validators.password("password", v),
             ),
             const SizedBox(height: 28.0),
             Row(

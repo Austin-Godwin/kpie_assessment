@@ -1,4 +1,5 @@
 import 'package:flutter/animation.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_flushbar/flutter_flushbar.dart';
 import 'package:kpie_assessment/core/services/navigation.dart';
 import 'package:kpie_assessment/utils/color.dart';
@@ -15,6 +16,8 @@ class AppFlushBar {
       forwardAnimationCurve: Curves.decelerate,
       reverseAnimationCurve: Curves.easeOut,
       title: title,
+      borderRadius: BorderRadius.circular(10.0),
+      margin: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 30),
       flushbarPosition: FlushbarPosition.TOP,
       duration: Duration(seconds: duration),
       isDismissible: true,

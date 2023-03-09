@@ -6,7 +6,7 @@ class UserInput extends StatefulWidget {
   final String text;
   final TextEditingController? controller;
   final bool isPassword;
-
+  final String? Function(String?)? validator;
   final bool obscureText;
   final bool enableSuggestions;
   final bool autoCorrect;
@@ -17,6 +17,7 @@ class UserInput extends StatefulWidget {
     this.controller,
     this.isPassword = false,
     this.obscureText = false,
+    this.validator,
     this.enableSuggestions = false,
     this.autoCorrect = false,
     this.textInputType,
@@ -55,6 +56,7 @@ class _UserInputState extends State<UserInput> {
       keyboardType: widget.textInputType,
       obscureText: widget.obscureText,
       autocorrect: widget.autoCorrect,
+      validator: widget.validator,
       enableSuggestions: widget.enableSuggestions,
       decoration: InputDecoration(
         contentPadding:

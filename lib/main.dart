@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kpie_assessment/core/services/navigation.dart';
 import 'package:kpie_assessment/views/onboarding/onboarding.dart';
+import 'package:kpie_assessment/views/profile/profile.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -12,11 +15,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: Navigation.instance.navigatorKey,
+      routes: {
+        "/": (context) => const Onboarding(),
+        "/profileView": (context) => const Profile(),
+      },
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Onboarding(),
+      // home: const Onboarding(),
     );
   }
 }

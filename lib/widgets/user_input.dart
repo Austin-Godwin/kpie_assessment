@@ -4,7 +4,9 @@ import 'package:kpie_assessment/utils/color.dart';
 
 class UserInput extends StatefulWidget {
   final String text;
+  final TextEditingController? controller;
   final bool isPassword;
+
   final bool obscureText;
   final bool enableSuggestions;
   final bool autoCorrect;
@@ -12,6 +14,7 @@ class UserInput extends StatefulWidget {
   const UserInput({
     Key? key,
     required this.text,
+    this.controller,
     this.isPassword = false,
     this.obscureText = false,
     this.enableSuggestions = false,
@@ -24,7 +27,6 @@ class UserInput extends StatefulWidget {
 }
 
 class _UserInputState extends State<UserInput> {
-
   final FocusNode _textFormFieldFocus = FocusNode();
   Color focusColor = AppColors.kLightGrey;
 
@@ -44,17 +46,19 @@ class _UserInputState extends State<UserInput> {
 
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: widget.controller,
       focusNode: _textFormFieldFocus,
       keyboardType: widget.textInputType,
       obscureText: widget.obscureText,
       autocorrect: widget.autoCorrect,
       enableSuggestions: widget.enableSuggestions,
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 29.0, vertical: 16.0),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 29.0, vertical: 16.0),
         filled: true,
         fillColor: focusColor,
         focusColor: AppColors.kLightBlue,

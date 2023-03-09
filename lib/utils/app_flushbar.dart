@@ -1,0 +1,38 @@
+import 'package:flutter/animation.dart';
+import 'package:flutter_flushbar/flutter_flushbar.dart';
+import 'package:kpie_assessment/core/services/navigation.dart';
+import 'package:kpie_assessment/utils/color.dart';
+
+class AppFlushBar {
+  static final Navigation _navigation = Navigation.instance;
+
+  static void showError({
+    required String title,
+    required String message,
+    int duration = 3,
+  }) {
+    Flushbar(
+      forwardAnimationCurve: Curves.decelerate,
+      reverseAnimationCurve: Curves.easeOut,
+      title: title,
+      flushbarPosition: FlushbarPosition.TOP,
+      duration: Duration(seconds: duration),
+      isDismissible: true,
+      backgroundColor: AppColors.kWarning,
+      message: message,
+    ).show(_navigation.navigatorKey.currentState!.context);
+  }
+
+  static void showSuccess({required String title, required message, int duration = 3,}) {
+    Flushbar(
+      forwardAnimationCurve: Curves.decelerate,
+      reverseAnimationCurve: Curves.easeOut,
+      title: title,
+      flushbarPosition: FlushbarPosition.TOP,
+      duration: Duration(seconds: duration),
+      isDismissible: true,
+      backgroundColor: AppColors.kActive,
+      message: message,
+    ).show(_navigation.navigatorKey.currentState!.context);
+  }
+}

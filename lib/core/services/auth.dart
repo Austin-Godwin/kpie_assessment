@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:kpie_assessment/core/constants/constants.dart';
+import 'package:kpie_assessment/core/models/errors.dart';
 import 'package:kpie_assessment/core/models/failure.dart';
 import 'package:kpie_assessment/core/models/user_data.dart';
 
@@ -63,7 +65,6 @@ class Auth {
     // }
     //
     // return result;
-
     try {
       // For multipart request
       var request = http.MultipartRequest(
@@ -93,14 +94,21 @@ class Auth {
 
         log('Current User: ${_currentUser!.userInfo.email}, ${_currentUser!.userInfo.userName}, ${_currentUser!.accessToken}, ${_currentUser!.userId}');
       } else {
+        
         log('''Error: 
         ${responseData["message"]},
         ${responseData["code"]},
         ${responseData["errors"]} 
         ''');
+        throw AppException(message: responseData["message"]);
       }
-    } catch (e) {
-      log(e.toString());
+    } on AppException {
+      rethrow;
+    } on SocketException{
+      rethrow;
+    } 
+    catch (e) {
+      throw AppException(message: e.toString());
     }
   }
 
@@ -177,9 +185,15 @@ class Auth {
         ${responseData["code"]},
         ${responseData["errors"]} 
         ''');
+        throw AppException(message: responseData["message"]);
       }
-    } on Failure catch (e) {
+    } on AppException {
       rethrow;
+    } on SocketException {
+      rethrow;
+    }
+    catch (e) {
+      throw AppException(message: e.toString());
     }
   }
 

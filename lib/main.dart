@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kpie_assessment/core/router/app_router.dart';
 import 'package:kpie_assessment/core/services/navigation.dart';
 import 'package:kpie_assessment/views/authentication/login/login.dart';
 import 'package:kpie_assessment/views/authentication/sign_up/sign_up.dart';
@@ -18,17 +19,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorKey: Navigation.instance.navigatorKey,
-      routes: {
-        "/": (context) => const Onboarding(),
-        "/profileView": (context) => const Profile(),
-        "/loginView": (context) => const Login(),
-        "/registerView": (context) => const SignUP(),
-      },
+      onGenerateRoute: AppRouter.onGenerateRoutes,
+      // routes: {
+      //   "/": (context) => const Onboarding(),
+      //   "/profileView": (context) => const Profile(),
+      //   "/loginView": (context) => const Login(),
+      //   "/registerView": (context) => const SignUP(),
+      // },
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // home: const Onboarding(),
+      home: const Onboarding(),
     );
   }
 }

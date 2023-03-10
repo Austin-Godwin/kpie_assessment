@@ -8,14 +8,14 @@ class AppFlushBar {
   static final Navigation _navigation = Navigation.instance;
 
   static void showError({
-    required String title,
+  String? title,
     required String message,
     int duration = 3,
   }) {
     Flushbar(
       forwardAnimationCurve: Curves.decelerate,
       reverseAnimationCurve: Curves.easeOut,
-      title: title,
+      title: title ?? "An Error Occurred",
       borderRadius: BorderRadius.circular(10.0),
       margin: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 30),
       flushbarPosition: FlushbarPosition.TOP,
@@ -30,7 +30,7 @@ class AppFlushBar {
     Flushbar(
       forwardAnimationCurve: Curves.decelerate,
       reverseAnimationCurve: Curves.easeOut,
-      title: title,
+      title: title ?? "Success!!!!",
       flushbarPosition: FlushbarPosition.TOP,
       duration: Duration(seconds: duration),
       isDismissible: true,

@@ -1,8 +1,10 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kpie_assessment/base_view_model.dart';
 import 'package:kpie_assessment/core/constants/navigator_routes.dart';
+import 'package:kpie_assessment/core/models/errors.dart';
 import 'package:kpie_assessment/core/models/failure.dart';
 import 'package:kpie_assessment/core/services/auth.dart';
 import 'package:kpie_assessment/core/services/navigation.dart';
@@ -52,12 +54,19 @@ class SignUpViewModel extends BaseViewModel {
       setBusy(ViewState.idle);
       navToProfile();
       log('${fullName.text}, ${email.text}, ${password.text}');
-    } on Failure catch (e) {
+    } on AppException catch (e) {
+      
       AppFlushBar.showError(
-        title: e.title,
         message: e.message,
       );
       // log('View Model: ${e.message}');
+    } on SocketException catch (e) {
+      AppFlushBar.showError(
+        message: e.message,
+      );
+    }
+    finally {
+      setBusy(ViewState.idle);
     }
   }
 

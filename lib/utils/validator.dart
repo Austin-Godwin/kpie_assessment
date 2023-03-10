@@ -10,7 +10,7 @@ class Validators {
       return "$title can not be empty";
     } else {
       // check length of string
-      if (value.contains(" ")) {
+      // if (value.contains(" ")) {
         // String first = value.split(" ").first;
         // String last = value.split(" ").last;
         // if (last.length.toString().endsWith(' ')) {
@@ -23,11 +23,13 @@ class Validators {
 
         if (value.length < 5){
           return "Username must be between 5/32 characters";
-        }}
-      else {
-        return "please enter a valid $title";
-      }
+        }
+      // }
+      // else {
+      //   return "please enter a valid $title";
+      // }
     }
+    return null;
   }
 
   static String? email(String? value) {

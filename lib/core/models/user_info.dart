@@ -1,27 +1,31 @@
 class UserInfo {
-  final int userId;
-  final String fullName;
+  
+  final String userName;
   final String email;
+  final String profilePics;
 
   UserInfo({
-    required this.userId,
-    required this.fullName,
+    
+    required this.userName,
     required this.email,
+    required this.profilePics
   });
 
   factory UserInfo.fromJson(Map<String, dynamic> json) {
     return UserInfo(
-      userId: json['userId'],
-      fullName: json['fullName'],
+      
+      userName: json['username'],
       email: json['email'],
+      profilePics: json['avater']
     );
   }
 
   Map<String, dynamic> userInfoToJson() {
     return {
-      'userId' : userId,
-      'fullName' : fullName,
+      
+      'username' : userName,
       'email' : email,
+      'avatar' : profilePics,
     };
   }
 }

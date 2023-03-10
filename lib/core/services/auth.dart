@@ -20,7 +20,7 @@ class Auth {
     required String email,
     required String password,
   }) async {
-    final Map<String, dynamic> result;
+    // final Map<String, dynamic> result;
     final signUpData = {
       "username": userName,
       "email": email,
@@ -64,80 +64,126 @@ class Auth {
     //
     // return result;
 
-    // var request = http.MultipartRequest('POST', Uri.parse('${Constants.apiUrl}/register'));
-    // request.fields[signUpData];
-    // var response = await request.send();
-    //
-    // String responseData = await response.stream.transform(utf8.decoder).join();
-    // log(responseData);
     try {
       // For multipart request
       var request = http.MultipartRequest(
           'POST', Uri.parse('${Constants.apiUrl}/register'));
 
-      //for adding the files(in this case, our parameter)
+      //for adding the files(in this case, our signUpData valriable)
       request.fields.addAll(signUpData);
 
       //for completing the request
       http.StreamedResponse response = await request.send();
-      log('Response: ${response.stream.toString()}');
+      // log('Response: ${response.stream.bytesToString()}');
 
-
-
-      // log('Auth Service: ${responseData.toString()}');
+      //for getting and decoding the response into json format
+        final res = await http.Response.fromStream(response);
+        
+       final responseData = jsonDecode(res.body);
+        // log('${response.stream.bytesToString()}');
 
       if (response.statusCode == 200) {
-        //for getting and decoding the response into json format
-        final res = await http.Response.fromStream(response);
-        final responseData = jsonDecode(res.body);
-        // log(await response.stream.bytesToString());
-
+ 
         final data = responseData['data'];
-        log(responseData["data"]["user"]);
+        log("Response Data: ${responseData["data"]["user_info"]}");
 
         final userData = UserData.fromJson(data);
 
         _currentUser = userData;
+
+        log('Current User: ${_currentUser!.userInfo.email}, ${_currentUser!.userInfo.userName}, ${_currentUser!.accessToken}, ${_currentUser!.userId}');
+      } else {
+        log('''Error: 
+        ${responseData["message"]},
+        ${responseData["code"]},
+        ${responseData["errors"]} 
+        ''');
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  Future<void> login({
+    required String userName,
+    required String password,
+  }) async {
+    final Map<String, dynamic> result;
+    final loginData = {
+      "username": userName,
+      "email": _currentUser?.userInfo.email ?? '',
+      "password": password,
+    };
+    //
+    // final http.Response response = await http.post(
+    //   Uri.parse('${Constants.apiUrl}/login'),
+    //   body: json.encode(
+    //     <String, String>{
+    //       'email': user,
+    //       'password': password,
+    //     },
+    //   ),
+    // );
+    //
+    // if (response.statusCode == 200) {
+    //   final Map<String, dynamic> responseData = json.decode(response.body);
+    //   final data = responseData['data'];
+    //
+    //   final userData = UserData.fromJson(data);
+    //
+    //   result = {
+    //     'status': true,
+    //     'message': 'Successful',
+    //     'data': userData,
+    //   };
+    //   return result;
+    // } else {
+    //   result = {
+    //     'status': false,
+    //     'message': json.decode(response.body)['message'],
+    //   };
+    // }
+    // return result;
+    try {
+      // For multipart request
+      log('$_currentUser');
+      log(_currentUser?.userInfo.email ?? 'this is null',);
+      var request =
+          http.MultipartRequest('POST', Uri.parse('${Constants.apiUrl}/login'));
+
+      // For adding the files(in this case, our loginData variable)
+      request.fields.addAll(loginData);
+
+      //for completing the request
+      http.StreamedResponse response = await request.send();
+
+       //for getting and decoding the response into json format
+      final res = await http.Response.fromStream(response);
+      final responseData = jsonDecode(res.body);
+      
+      if (response.statusCode == 200) {
+      
+        final data = responseData['data'];
+
+        _currentUser = UserData.fromJson(data);
+
+        log("Current User Email: ${_currentUser!.userInfo.email}");
+
+        // _currentUser = userData;
+      }
+      else {
+        log('''Error: 
+        ${responseData["message"]},
+        ${responseData["code"]},
+        ${responseData["errors"]} 
+        ''');
       }
     } on Failure catch (e) {
       rethrow;
     }
   }
 
-  Future<Map<String, dynamic>> login({
-    required String user,
-    required String password,
-  }) async {
-    final Map<String, dynamic> result;
-
-    final http.Response response = await http.post(
-      Uri.parse('${Constants.apiUrl}/login'),
-      body: json.encode(
-        <String, String>{
-          'email': user,
-          'password': password,
-        },
-      ),
-    );
-
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = json.decode(response.body);
-      final data = responseData['data'];
-
-      final userData = UserData.fromJson(data);
-
-      result = {
-        'status': true,
-        'message': 'Successful',
-        'data': userData,
-      };
-      return result;
-    } else {
-      result = {
-        'status': false,
-        'message': json.decode(response.body)['message'],
-      };
-    }
-    return result;
+  logOut() {
+    _currentUser = null;
   }
 }

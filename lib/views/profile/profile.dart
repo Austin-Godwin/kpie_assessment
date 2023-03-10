@@ -1,16 +1,21 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kpie_assessment/core/constants/constants.dart';
 import 'package:kpie_assessment/utils/color.dart';
+import 'package:kpie_assessment/views/profile/view_model/profile_view_model.dart';
 import 'package:kpie_assessment/widgets/app_button.dart';
 import 'package:kpie_assessment/widgets/clickable_text.dart';
 
-class Profile extends StatelessWidget {
+final _profileViewModelProvider = ChangeNotifierProvider.autoDispose<ProfileViewModel>((ref) => ProfileViewModel(),);
+
+class Profile extends ConsumerWidget {
   const Profile({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final model = ref.watch(_profileViewModelProvider);
     return Scaffold(
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 26.0),
@@ -28,7 +33,7 @@ class Profile extends StatelessWidget {
               const Spacer(),
               ClickableText(
                 text: 'Log out',
-                onTap: () {},
+                onTap: model.logOut,
                 fontSize: 22.0,
                 textColor: AppColors.kWarning,
               ),
@@ -39,7 +44,7 @@ class Profile extends StatelessWidget {
             clipBehavior: Clip.none,
             children: [
               Text(
-                'James Idowu',
+                model.userInfo?.userName ?? "",
                 style: GoogleFonts.aBeeZee(
                   fontSize: 25.0,
                   fontWeight: FontWeight.w400,
@@ -55,7 +60,7 @@ class Profile extends StatelessWidget {
                       borderRadius: BorderRadius.circular(80),
                       color: Colors.red),
                   child: CachedNetworkImage(
-                    imageUrl: Constants.profilePhotoUrl,
+                    imageUrl: model.userInfo?.profilePics ?? Constants.profilePhotoUrl,
                     fit: BoxFit.cover,
                   ),
                 ),
